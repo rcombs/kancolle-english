@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>KanColle English</title>
+        <script>
+            var http = require('http'),
+                express = require('express'),
+                static = require('send-static'),
+                translateProxy = require('./translateProxy.js'),
+                gui = require('nw.gui');
+
+            var translateState = {
+                dataPath: gui.App.dataPath,
+                jsonURI: 'http://comeonandsl.am/kc_eng.json',
+                port: 7392
+            };
+
+            var proxy = new translateProxy(translateState);
+
+            var app = express();
+
+            app.use(serveStatic('static', {'index': 'index.html'}));
+
+            app.use(proxy);
+
+            app.listen(translateState.port, 'localhost');
+
+            proxy.loadState(function(err){
+                if(err){
+                    runFirstTime();
+                }else{
+                    proxy.fetchJSON(function(err){
+                        // Notify the user that we couldn't fetch new data
+                    });
+                }
+            });
+
+            function runFirstTime(){
+                // Let the user enter their API information
+                // and walk them through using the app;
+                // possibly load website and fetch API token ourselves?
+            }
+        </script>
+    </head>
+    <body>
+        <h1>TEST</h1>
+    </body>
+</html>
