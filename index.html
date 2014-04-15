@@ -5,14 +5,17 @@
         <script>
             var http = require('http'),
                 express = require('express'),
-                static = require('send-static'),
+                serveStatic = require('serve-static'),
                 translateProxy = require('./translateProxy.js'),
                 gui = require('nw.gui');
 
             var translateState = {
                 dataPath: gui.App.dataPath,
                 jsonURI: 'http://comeonandsl.am/kc_eng.json',
-                port: 7392
+                methods: {"ship":["api_sinfo","api_getmes"],"stype":["api_name"],"furniture":["api_description"],"slotitem":["api_name","api_info"],"useitem":["api_description"],"maparea":["api_name"],"questlist":["api_title","api_detail"]},
+                port: 7392,
+                hostname: '125.6.189.135',
+                configured: 1
             };
 
             var proxy = new translateProxy(translateState);
@@ -21,7 +24,7 @@
 
             app.use(serveStatic('static', {'index': 'index.html'}));
 
-            app.use(proxy);
+            app.use(proxy.middleware());
 
             app.listen(translateState.port, 'localhost');
 

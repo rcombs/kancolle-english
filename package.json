@@ -1,4 +1,7 @@
 {
-    "name": "KanColle English",
-    "main": "index.html"
+    "name": "KanColle-English",
+    "main": "index.html",
+    "webkit": {
+        "plugin": true
+    }
 }
